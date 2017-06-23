@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="log.root" value="/home/delxie/shared/log/keeper" />
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{sessionId}] %-5level [%thread] %logger{80} :%msg%n" />
+
+    <!-- 控制输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!--错误输出 -->
+    <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.root}/_WARN.txt</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>warn</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${log.root}/_ERROR/%d{yyyy-MM-dd}/%i.txt
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>20MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.root}/keeperlog.txt</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.root}/%d{yyyy-MM-dd}/keeperlog-%i.%d{yyyy-MM-dd}.log
+            </fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <TimeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <MaxFileSize>20MB</MaxFileSize>
+            </TimeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${pattern}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 日志过滤 -->
+    <logger name="org.springframework">
+        <level value="info" />
+    </logger>
+    <logger name="java.sql">
+        <level value="info" />
+    </logger>
+    <logger name="org.apache">
+        <level value="info" />
+    </logger>
+    <logger name="com.lambdaworks.redis">
+        <level value="info" />
+    </logger>
+
+    <!-- 按模块输出业务日志 -->
+    <logger name="com.del.keeper" additivity="false">
+        <level value="debug" />
+        <appender-ref ref="INFO" />
+        <appender-ref ref="WARN" />
+    </logger>
+
+    <!-- root级别控制 -->
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="WARN" />
+        <appender-ref ref="INFO" />
+    </root>
+
+</configuration>  
