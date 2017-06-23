@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!--classPathEntry:数据库的JDBC驱动 -->
+    <classPathEntry location="D:\maven-repository\mysql\mysql-connector-java\5.1.41\mysql-connector-java-5.1.41.jar" />
+
+    <!-- 注意这里面的顺序确定的，不能随变更改 -->
+    <context id="mysqlTables" targetRuntime="MyBatis3">
+
+        <property name="autoDelimitKeywords" value="true" />
+        <property name="beginningDelimiter" value="`" />
+        <property name="endingDelimiter" value="`" />
+
+        <!-- 支持的MyBatis RowBounds,分页 -->
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
+
+        <!-- bean添加Equals,HashCode方法 -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+
+        <!-- bean添加序列化接口 -->
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin">
+            <property name="suppressJavaInterface" value="false" />
+        </plugin>
+
+        <!-- bean添加toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+        <!-- 生成乐观锁 -->
+        <plugin type="honc.protoss.plugin.OptimisticLockVersionXmlPlugin" />
+
+        <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <property name="suppressAllComments" value="true" />
+        </commentGenerator>
+
+        <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.42:3306/keeper"
+            userId="keeper" password="keeper">
+        </jdbcConnection>
+
+        <!-- 类型转换 -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- entity配置 -->
+        <javaModelGenerator targetPackage="com.del.keeper.commons.entity" targetProject="src/main/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true" />
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- xml配置 -->
+        <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- mapper配置 -->
+        <javaClientGenerator targetPackage="com.del.keeper.commons.mapper" targetProject="src/main/java"
+            type="XMLMAPPER">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <!-- pojo 实体生成器 -->
+        <!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
+        <!-- schema即为数据库名 可不写 -->
+        <!--<table tableName="protoss_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" -->
+        <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"> -->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
+        <!--</table> -->
+
+        <!--<table tableName="protoss_user_auth" domainObjectName="UserAuth" enableCountByExample="false" -->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" -->
+        <!--selectByExampleQueryId="false"> -->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
+        <!--</table> -->
+
+        <!--<table tableName="protoss_user_auth_log" domainObjectName="UserAuthLog" enableCountByExample="false" -->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" -->
+        <!--selectByExampleQueryId="false"> -->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
+        <!--</table> -->
+
+        <!--<table tableName="protoss_gold_account" domainObjectName="GoldAccount" enableCountByExample="false" -->
+        <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" -->
+        <!--selectByExampleQueryId="false"> -->
+        <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
+        <!--</table> -->
+
+        <table tableName="protoss_gold_account_log" domainObjectName="GoldAccountLog" enableCountByExample="false"
+            enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+            selectByExampleQueryId="false">
+            <generatedKey column="id" sqlStatement="MySql" identity="true" />
+        </table>
+    </context>
+</generatorConfiguration>

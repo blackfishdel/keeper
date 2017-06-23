@@ -10,67 +10,67 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
 		http://www.springframework.org/schema/aop   http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <description>数据源及事务配置</description>
-
-     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <!-- 配置连接池属性 -->
-        <property name="driverClass" value="${del.jdbc.driver}" />
-        <property name="jdbcUrl" value="${del.jdbc.url}" />
-        <property name="user" value="${del.jdbc.username}" />
-        <property name="password" value="${del.jdbc.password}" />
-        <!-- c3p0连接池的私有属性 -->
-        <property name="maxPoolSize" value="30" />
-        <property name="minPoolSize" value="10" />
-        <!-- 关闭连接后不自动commit -->
-        <property name="autoCommitOnClose" value="false" />
-        <!-- 获取连接超时时间 -->
-        <property name="checkoutTimeout" value="10000" />
-        <!-- 当获取连接失败重试次数 -->
-        <property name="acquireRetryAttempts" value="2" />
+    <!--druid连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="driverClassName" value="${spring.datasource.driver-class-name}" />
+        <property name="url" value="${spring.datasource.jdbc-url}" />
+        <property name="username" value="${spring.datasource.username}" />
+        <property name="password" value="${spring.datasource.password}" />
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${spring.datasource.initial-size}" />
+        <property name="minIdle" value="${spring.datasource.min-idle}" />
+        <property name="maxActive" value="${spring.datasource.max-active}" />
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="${spring.datasource.max-wait}" />
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="${spring.datasource.time-between-eviction-runs-millis}" />
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="${spring.datasource.min-evictable-idle-time-millis}" />
+        <property name="validationQuery" value="${spring.datasource.validation-query}" />
+        <property name="testWhileIdle" value="${spring.datasource.test-while-idle}" />
+        <property name="testOnBorrow" value="${spring.datasource.test-on-borrow}" />
+        <property name="testOnReturn" value="${spring.datasource.test-on-return}" />
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements" value="false" />
+        <!-- <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="${spring.datasource.filters}" />
+        <!--druid.stat.slowSqlMillis=5000 用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢 -->
+        <property name="connectionProperties" value="druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000" />
+        <!--用来配置SQL慢的标准，执行时间超过slowSqlMillis的就是慢 -->
     </bean>
 
-    <!-- ************************************************************************************************* -->
-    <!-- * 数据源配置 * -->
-    <!-- ************************************************************************************************* -->
-    <!-- 代理datasource，使其能够显式获取preparedStatement的参数值 -->
-    <bean id="proxyDataSource" class="org.jdbcdslog.ConnectionPoolDataSourceProxy">
-        <property name="targetDSDirect" ref="dataSource" />
+    <!-- druid 监控拦截器 -->
+    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor" />
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>com.del.*.*Service</value>
+                <value>com.del.*.*Dao</value>
+            </list>
+        </property>
     </bean>
 
-    <!-- ************************************************************************************************* -->
-    <!-- * MyBatis 配置 * -->
-    <!-- ************************************************************************************************* -->
-    <!-- sqlSessionFactory -->
+    <aop:config proxy-target-class="true">
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+    </aop:config>
+
+    <!-- mybatis session工厂 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="proxyDataSource" />
-        <property name="configLocation" value="classpath:/mybatis.xml" />
-        <property name="mapperLocations" value="classpath*:/mappers/**/*.xml" />
+        <property name="dataSource" ref="dataSource" />
+        <property name="configLocation" value="classpath:mybatis.xml" />
+        <property name="mapperLocations" value="classpath*:/mappers/*Mapper.xml" />
     </bean>
-
-    <!-- scan for mappers and let them be autowired -->
-    <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <!-- Mapper接口所在包名，Spring会自动查找其下的Mapper -->
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
-        <property name="basePackage" value="com.del.*.dao" />
+    <!-- mybatis mapper 扫描器 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.del.**.mapper" />
     </bean>
-
-    <!-- ************************************************************************************************* -->
-    <!-- * 事务配置 * -->
-    <!-- ************************************************************************************************* -->
-    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="proxyDataSource" />
+    <!-- mybatis 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
     </bean>
-
-    <!-- 使用aop事务 -->
-    <tx:advice id="transactionAdvice" transaction-manager="txManager">
-        <tx:attributes>
-            <tx:method name="*" read-only="false" propagation="REQUIRED" rollback-for="java.lang.Exception" />
-        </tx:attributes>
-    </tx:advice>
-
-    <!-- <aop:config> -->
-    <!-- <aop:pointcut id="pointCutMethod" expression="execution(* com.del.**.service.transaction..*.*(..))" /> -->
-    <!-- <aop:advisor advice-ref="transactionAdvice" pointcut-ref="pointCutMethod" /> -->
-    <!-- </aop:config> -->
-
+    <!-- mybatis CRUD模版 -->
+    <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg index="0" ref="sqlSessionFactory" />
+    </bean>
 </beans>

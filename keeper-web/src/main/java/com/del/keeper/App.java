@@ -18,18 +18,18 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:configure.properties")
 @ImportResource("classpath:spring-base.xml")
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class,
-    DataSourceTransactionManagerAutoConfiguration.class, MybatisAutoConfiguration.class })
+        DataSourceTransactionManagerAutoConfiguration.class, MybatisAutoConfiguration.class })
 public class App extends SpringBootServletInitializer {
 
-  /**
-   * web.xml初始化
-   */
-  @Override
-  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    return application.sources(App.class);
-  }
+    /**
+     * web.xml初始化
+     */
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(App.class);
+    }
 
-  public static void main(String[] args) {
-    SpringApplication.run(App.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(App.class, args);
+    }
 }
