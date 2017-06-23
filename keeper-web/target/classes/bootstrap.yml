@@ -1,6 +1,0 @@
-spring:
-  application:
-    name: keeper-web
-  jmx:
-    enabled: false
-
