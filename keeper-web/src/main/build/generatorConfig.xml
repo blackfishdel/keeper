@@ -26,7 +26,7 @@
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
         <!-- 生成乐观锁 -->
-        <plugin type="honc.protoss.plugin.OptimisticLockVersionXmlPlugin" />
+        <plugin type="com.del.keeper.plugin.OptimisticLockVersionXmlPlugin" />
 
         <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
         <commentGenerator>
@@ -35,8 +35,8 @@
         </commentGenerator>
 
         <!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://192.168.1.42:3306/keeper"
-            userId="keeper" password="keeper">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://116.62.233.2:3306/keeper"
+            userId="root" password="Del!@#$5679921">
         </jdbcConnection>
 
         <!-- 类型转换 -->
@@ -67,30 +67,30 @@
         <!-- pojo 实体生成器 -->
         <!-- tableName:用于自动生成代码的数据库表；domainObjectName:对应于数据库表的javaBean类名 -->
         <!-- schema即为数据库名 可不写 -->
-        <!--<table tableName="protoss_user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" -->
+        <!--<table tableName="user" domainObjectName="User" enableCountByExample="false" enableUpdateByExample="false" -->
         <!--enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"> -->
         <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
         <!--</table> -->
 
-        <!--<table tableName="protoss_user_auth" domainObjectName="UserAuth" enableCountByExample="false" -->
+        <!--<table tableName="user_auth" domainObjectName="UserAuth" enableCountByExample="false" -->
         <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" -->
         <!--selectByExampleQueryId="false"> -->
         <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
         <!--</table> -->
 
-        <!--<table tableName="protoss_user_auth_log" domainObjectName="UserAuthLog" enableCountByExample="false" -->
+        <!--<table tableName="user_auth_log" domainObjectName="UserAuthLog" enableCountByExample="false" -->
         <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" -->
         <!--selectByExampleQueryId="false"> -->
         <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
         <!--</table> -->
 
-        <!--<table tableName="protoss_gold_account" domainObjectName="GoldAccount" enableCountByExample="false" -->
+        <!--<table tableName="_account" domainObjectName="Account" enableCountByExample="false" -->
         <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" -->
         <!--selectByExampleQueryId="false"> -->
         <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/> -->
         <!--</table> -->
 
-        <table tableName="protoss_gold_account_log" domainObjectName="GoldAccountLog" enableCountByExample="false"
+        <table tableName="_account_log" domainObjectName="AccountLog" enableCountByExample="false"
             enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
             selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true" />

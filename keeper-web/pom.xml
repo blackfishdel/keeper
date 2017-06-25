@@ -113,9 +113,9 @@
                 </configuration>
                 <dependencies>
                     <dependency>
-                        <groupId>honc</groupId>
-                        <artifactId>protoss-plugin</artifactId>
-                        <version>1.0.0-SNAPSHOT</version>
+                        <groupId>com.del</groupId>
+                        <artifactId>keeper-plugin</artifactId>
+                        <version>0.0.1-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
