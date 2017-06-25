@@ -9,6 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 /**
  * 
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.PropertySource;
 @ImportResource("classpath:spring-base.xml")
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class, MybatisAutoConfiguration.class })
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 86400*30)
 public class App extends SpringBootServletInitializer {
 
     /**

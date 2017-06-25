@@ -1,3 +1,8 @@
 spring:
   session:
-    store-type: none
+    store-type: redis
+  redis:
+    host: 116.62.233.2
+    port: 6379
+    database: 0
+    password: Del!@345679921
