@@ -14,7 +14,7 @@ import java.util.List;
  * @author xie
  *
  */
-@Repository
+//@Repository
 public class RedisQueueCacheDao<K, V> {
     protected static final Logger log = LoggerFactory.getLogger(RedisQueueCacheDao.class);
 

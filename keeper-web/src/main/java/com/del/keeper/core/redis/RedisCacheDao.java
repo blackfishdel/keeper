@@ -22,7 +22,7 @@ import java.util.Set;
  *
  */
 @SuppressWarnings({ "unchecked", "rawtypes" })
-@Repository
+//@Repository
 public class RedisCacheDao<V> extends AbstractRedisCacheDao {
 
     /**

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
  * @param <K> key
  * @param <V> value
  */
-@Repository
+//@Repository
 public class RedisHashDao<K, V> {
 
 	@Resource
