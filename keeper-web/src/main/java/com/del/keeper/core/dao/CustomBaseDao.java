@@ -27,10 +27,6 @@ public abstract class CustomBaseDao extends SqlSessionDaoSupport {
     // mapper.xml配置的namespase
     protected String NAMESPASE;
 
-    public int deleteByPrimaryKey(Object id) {
-        return this.getSqlSession().delete(this.NAMESPASE + ".deleteByPrimaryKey", id);
-    }
-
     public Object insert(Object record) {
         this.getSqlSession().insert(this.NAMESPASE + ".insert", record);
         return record;
@@ -46,6 +42,10 @@ public abstract class CustomBaseDao extends SqlSessionDaoSupport {
 
     public int updateByPrimaryKeySelective(Object record) {
         return this.getSqlSession().update(this.NAMESPASE + ".updateByPrimaryKeySelective", record);
+    }
+
+    public int deleteByPrimaryKey(Object id) {
+        return this.getSqlSession().delete(this.NAMESPASE + ".deleteByPrimaryKey", id);
     }
 
     public Object selectByPrimaryKey(Object id) {
